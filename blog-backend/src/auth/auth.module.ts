@@ -10,13 +10,15 @@ import { User, UserSchema } from '../models/user.schema';
 
 @Module({
   imports: [
+    ConfigModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         secret:
-          configService.get<string>('JWT_SECRET') || 'your_jwt_secret_key_here',
+          configService.get<string>('JWT_SECRET') ||
+          'o+XLzJey0EvjA6WFMb4Wng/16fAsic8HwNrpe8UZJYM=',
         signOptions: {
           expiresIn: configService.get<string>('JWT_EXPIRATION') || '7d',
         },

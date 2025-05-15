@@ -42,7 +42,7 @@ async function seedData() {
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash('password123', salt);
 
-        const user1 = await User.create({
+        const yourUser = await User.create({
             name: 'Harsh Chourasia',
             email: 'harsh@example.com',
             password: hashedPassword
@@ -67,46 +67,99 @@ async function seedData() {
 
         console.log('Categories created');
 
-        const blogs = [
+        const yourBlogs = [
+            // Technology Blogs
             {
-                title: 'Getting Started with Nest.js',
-                blog_image_url: 'https://example.com/images/nestjs.jpg',
-                content: 'Nest.js is a progressive Node.js framework for building efficient, reliable and scalable server-side applications. In this blog post, we\'ll explore the basics of Nest.js and how to set up your first project.',
-                author: user1._id,
+                title: 'The Future of Artificial Intelligence',
+                blog_image_url: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?ixlib=rb-4.0.3',
+                content: 'Artificial intelligence is transforming industries at an unprecedented pace. From healthcare to finance, AI applications are becoming more sophisticated and integrated into our daily lives. This post explores the latest advancements and what we can expect in the coming years.',
+                author: yourUser._id,
                 category: techCategory._id,
                 category_name: techCategory.name
             },
             {
-                title: 'My Trip to Barcelona',
-                blog_image_url: 'https://example.com/images/barcelona.jpg',
-                content: 'Barcelona is a beautiful city with amazing architecture, delicious food, and friendly people. Here\'s my experience visiting the city for the first time and the must-see attractions.',
-                author: user1._id,
+                title: 'Getting Started with React 18',
+                blog_image_url: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?ixlib=rb-4.0.3',
+                content: 'React 18 introduces several exciting new features including concurrent rendering, automatic batching, and transitions. In this tutorial, we walk through setting up a new project and exploring these features with practical examples.',
+                author: yourUser._id,
+                category: techCategory._id,
+                category_name: techCategory.name
+            },
+            {
+                title: 'Blockchain Technology Explained',
+                blog_image_url: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?ixlib=rb-4.0.3',
+                content: 'Beyond cryptocurrencies, blockchain has numerous applications in supply chain, healthcare, and digital identity. This post breaks down how blockchain works and examines real-world use cases that are changing industries.',
+                author: yourUser._id,
+                category: techCategory._id,
+                category_name: techCategory.name
+            },
+
+            // Travel Blogs
+            {
+                title: 'Hidden Gems of Bali',
+                blog_image_url: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?ixlib=rb-4.0.3',
+                content: 'While most tourists flock to the beaches of Kuta and Seminyak, Bali has countless hidden treasures waiting to be discovered. From the serene waterfalls of Munduk to the ancient temples of East Bali, this guide takes you off the beaten path.',
+                author: yourUser._id,
                 category: travelCategory._id,
                 category_name: travelCategory.name
             },
             {
-                title: 'Homemade Pizza Recipe',
-                blog_image_url: 'https://example.com/images/pizza.jpg',
-                content: 'Making pizza at home is easier than you think. Here\'s my favorite recipe for a delicious homemade pizza that your family will love.',
-                author: user2._id,
+                title: 'Backpacking Through Europe on a Budget',
+                blog_image_url: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?ixlib=rb-4.0.3',
+                content: 'Traveling through Europe doesn\'t have to break the bank. With careful planning and these money-saving tips, you can experience the rich cultures and stunning landscapes of Europe without spending a fortune. Includes hostel recommendations and transportation hacks.',
+                author: yourUser._id,
+                category: travelCategory._id,
+                category_name: travelCategory.name
+            },
+            {
+                title: 'Solo Travel in Japan: A Complete Guide',
+                blog_image_url: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?ixlib=rb-4.0.3',
+                content: 'Japan is one of the safest and most rewarding destinations for solo travelers. From navigating the efficient transit system to etiquette at ryokans and onsens, this comprehensive guide covers everything you need to know for an unforgettable solo adventure.',
+                author: yourUser._id,
+                category: travelCategory._id,
+                category_name: travelCategory.name
+            },
+
+            // Food Blogs
+            {
+                title: 'Mastering Sourdough Bread at Home',
+                blog_image_url: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?ixlib=rb-4.0.3',
+                content: 'The art of sourdough baking combines science and tradition. This step-by-step guide covers creating and maintaining a starter, perfecting your kneading technique, and achieving that perfect crust and airy crumb that makes sourdough so special.',
+                author: yourUser._id,
                 category: foodCategory._id,
                 category_name: foodCategory.name
             },
             {
-                title: 'React vs Angular: Which Should You Choose?',
-                blog_image_url: 'https://example.com/images/frontend.jpg',
-                content: 'React and Angular are two of the most popular frontend frameworks. In this blog post, we\'ll compare the two frameworks and help you decide which one is right for your project.',
-                author: user2._id,
-                category: techCategory._id,
-                category_name: techCategory.name
+                title: 'Authentic Indian Curry Recipes',
+                blog_image_url: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?ixlib=rb-4.0.3',
+                content: 'Indian cuisine offers an incredible variety of flavors and techniques. This collection of authentic curry recipes includes butter chicken, chana masala, and vegetable korma, with tips on sourcing authentic spices and achieving the perfect balance of flavors.',
+                author: yourUser._id,
+                category: foodCategory._id,
+                category_name: foodCategory.name
+            },
+            {
+                title: 'Plant-Based Meal Prep for Beginners',
+                blog_image_url: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?ixlib=rb-4.0.3',
+                content: 'Transitioning to a plant-based diet can seem daunting, but with proper meal prep it becomes effortless. This guide includes five easy, nutritious recipes that store well and can be mixed and matched throughout the week, along with storage tips and nutritional information.',
+                author: yourUser._id,
+                category: foodCategory._id,
+                category_name: foodCategory.name
+            },
+            {
+                title: 'The Art of French Pastry',
+                blog_image_url: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?ixlib=rb-4.0.3',
+                content: 'French pastries are renowned for their delicate textures and precise techniques. This post demystifies classic recipes like croissants, éclairs, and macarons, with detailed instructions and troubleshooting tips for common challenges home bakers face.',
+                author: yourUser._id,
+                category: foodCategory._id,
+                category_name: foodCategory.name
             }
         ];
+        await Blog.insertMany(yourBlogs);
 
-        await Blog.insertMany(blogs);
-        console.log('Blogs created');
+        console.log('10 Blogs created successfully');
 
         console.log('Database seeded successfully!');
-        console.log('\nTest users:');
+        console.log('\nTest user:');
         console.log('- Email: harsh@example.com, Password: password123');
 
     } catch (error) {

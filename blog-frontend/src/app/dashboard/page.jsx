@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { baseURL } from "../../utils/api";
+import BlogCarousel from "./BlogCarousel";
 
 export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [blogs, setBlogs] = useState([]);
+  const [featuredBlogs, setFeaturedBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -34,7 +36,6 @@ export default function Dashboard() {
 
       if (!response.ok) {
         if (response.status === 401) {
-          // Token expired or invalid
           localStorage.removeItem("token");
           localStorage.removeItem("user");
           router.push("/");
@@ -45,6 +46,9 @@ export default function Dashboard() {
 
       const data = await response.json();
       setBlogs(data);
+
+      const featured = data.slice(0, Math.min(3, data.length));
+      setFeaturedBlogs(featured);
     } catch (err) {
       setError(err.message || "An error occurred while fetching blogs");
     } finally {
@@ -58,20 +62,28 @@ export default function Dashboard() {
     router.push("/");
   };
 
+  const hasBlogs = !loading && blogs.length > 0;
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="bg-white shadow px-4 py-3 flex justify-between items-center">
-        <div className="font-bold text-xl text-purple-600">BLOG DASHBOARD</div>
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <header className="bg-opacity-20 text-white px-4 py-3 flex justify-between items-center absolute top-0 left-0 right-0 z-20">
+        <div className="font-bold text-xl text-white">BLOG DASHBOARD</div>
         <div className="flex items-center space-x-4">
-          {user && <div className="text-gray-700">Welcome, {user.name}</div>}
+          {user && <div className="text-white">Welcome, {user.name}</div>}
           <button
             onClick={handleLogout}
-            className="bg-gray-200 text-gray-800 px-4 py-1 rounded-md text-sm font-medium hover:bg-gray-300"
+            className="bg-gray-800 bg-opacity-50 text-white px-4 py-1 rounded-md text-sm font-medium hover:bg-gray-700 hover:bg-opacity-70 transition-colors duration-200"
           >
             Logout
           </button>
         </div>
       </header>
+
+      {hasBlogs && featuredBlogs.length > 0 && (
+        <div className="w-full">
+          <BlogCarousel blogs={featuredBlogs} />
+        </div>
+      )}
 
       <main className="flex-grow p-6">
         <div className="mb-8">
@@ -92,17 +104,41 @@ export default function Dashboard() {
         )}
 
         {!loading && blogs.length === 0 && (
-          <div className="text-center py-10 text-gray-500">
-            <p>You don't have any blog posts yet.</p>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 my-8 max-w-3xl mx-auto text-center">
+            <div className="relative h-40 w-40 mx-auto mb-6">
+              <Image
+                src="/empty-blog.svg"
+                alt="No blogs"
+                fill
+                className="object-contain"
+                onError={(e) => {
+                  e.target.src = "/placeholder-image.jpg";
+                  e.target.onerror = null;
+                }}
+              />
+            </div>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+              No Blog Posts Yet
+            </h2>
+            <p className="text-gray-600 mb-6">
+              You haven't created any blog posts yet. Start writing and sharing
+              your ideas with the world!
+            </p>
+            <button
+              onClick={() => router.push("/create-blog")}
+              className="bg-purple-600 text-white px-6 py-3 rounded-md font-medium hover:bg-purple-700 transition-colors duration-200"
+            >
+              Create Your First Blog
+            </button>
           </div>
         )}
 
-        {!loading && blogs.length > 0 && (
+        {hasBlogs && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {blogs.map((blog) => (
               <div
                 key={blog._id}
-                className="border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="relative h-48">
                   <Image
@@ -136,7 +172,7 @@ export default function Dashboard() {
         )}
       </main>
 
-      <footer className="bg-gray-50 border-t border-gray-200 py-4 px-6 text-center text-gray-500 text-sm">
+      <footer className="bg-white border-t border-gray-200 py-4 px-6 text-center text-gray-500 text-sm">
         © {new Date().getFullYear()} Blog System. All rights reserved.
       </footer>
     </div>
